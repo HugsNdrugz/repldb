@@ -3,9 +3,8 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent))
 from data_loader import load_and_clean_data, table_mapping, transform_mapping
-from database_utils import create_database_engine, create_table, table_exists, create_indexes
-from upload_script import UPLOAD_FOLDER
-import logging
+from database_utils import create_database_engine, create_locations_table, table_exists, create_table
+from sqlalchemy import text
 
 db_path = "my_database.db"
 
@@ -37,7 +36,7 @@ create_sms_messages_sql = """
 """
 
 create_chat_messages_sql = """
-    CREATE TABLE IF NOT EXISTS chat_messages (
+     CREATE TABLE IF NOT EXISTS chat_messages (
         messenger TEXT,
         time TEXT,
         time_dt DATETIME,
@@ -101,55 +100,45 @@ table_creation_mapping = {
   "locations": create_locations_sql
 }
 
-index_sql = [
-    """CREATE INDEX IF NOT EXISTS idx_keylogs_by_time ON keylogs(time_dt);""",
-    """CREATE INDEX IF NOT EXISTS idx_sms_messages_by_time ON sms_messages(time_dt);""",
-    """CREATE INDEX IF NOT EXISTS idx_sms_messages_by_contact ON sms_messages(contact_id);""",
-    """CREATE INDEX IF NOT EXISTS idx_chat_messages_by_time ON chat_messages(time_dt);""",
-    """CREATE INDEX IF NOT EXISTS idx_chat_messages_by_contact ON chat_messages(contact_id);""",
-    """CREATE INDEX IF NOT EXISTS idx_contacts_by_name ON contacts(name);""",
-    """CREATE INDEX IF NOT EXISTS idx_calls_by_time ON calls(time_dt);""",
-    """CREATE INDEX IF NOT EXISTS idx_calls_by_contact ON calls(contact_id);""",
-    """CREATE INDEX IF NOT EXISTS idx_installedapps_by_application ON installedapps(application_name);""",
-    """CREATE INDEX IF NOT EXISTS idx_locations_by_location_text ON locations(location_text);"""
-]
+
 def main():
-    """Main function that initializes the database, creates tables and indexes if they don't exist,
-        and processes the files in the uploads folder.
-    """
+    """Main function that loops through uploaded files and runs data processing."""
     #Create engine
-    logging.info("Starting main.py")
     db_engine = create_database_engine(db_path)
-    logging.info("Database engine created.")
+    # Create the locations table if it doesn't exist
+    if not create_locations_table(db_engine):
+        print("The locations table could not be created. Exiting....")
+        return
 
     # Create the other tables if they do not exist
     for table_name, create_sql in table_creation_mapping.items():
       if not table_exists(db_engine, table_name):
-          try:
-             create_table(db_engine, table_name, create_sql)
-          except Exception as e:
-            logging.error(f"The {table_name} could not be created: {e}. Exiting....")
+          if not create_table(db_engine, table_name, create_sql):
+            print(f"The {table_name} could not be created. Exiting....")
             return
-    # Create Indexes
-    try:
-        create_indexes(db_engine, index_sql)
-    except Exception as e:
-        logging.error(f"The indexes could not be created: {e}. Exiting...")
-        return
-
+    
+    with db_engine.connect() as conn:
+        conn.execute(text("""CREATE INDEX IF NOT EXISTS idx_keylogs_by_time ON keylogs(time_dt);"""))
+        conn.execute(text("""CREATE INDEX IF NOT EXISTS idx_sms_messages_by_time ON sms_messages(time_dt);"""))
+        conn.execute(text("""CREATE INDEX IF NOT EXISTS idx_sms_messages_by_contact ON sms_messages(contact_id);"""))
+        conn.execute(text("""CREATE INDEX IF NOT EXISTS idx_chat_messages_by_time ON chat_messages(time_dt);"""))
+        conn.execute(text("""CREATE INDEX IF NOT EXISTS idx_chat_messages_by_contact ON chat_messages(contact_id);"""))
+        conn.execute(text("""CREATE INDEX IF NOT EXISTS idx_contacts_by_name ON contacts(name);"""))
+        conn.execute(text("""CREATE INDEX IF NOT EXISTS idx_calls_by_time ON calls(time_dt);"""))
+        conn.execute(text("""CREATE INDEX IF NOT EXISTS idx_calls_by_contact ON calls(contact_id);"""))
+        conn.execute(text("""CREATE INDEX IF NOT EXISTS idx_installedapps_by_application ON installedapps(application_name);"""))
+        conn.execute(text("""CREATE INDEX IF NOT EXISTS idx_locations_by_location_text ON locations(location_text);"""))
     # Get a list of all files in the uploads folder
     if os.path.exists(UPLOAD_FOLDER):
        for filename in os.listdir(UPLOAD_FOLDER):
            if not filename.startswith("cleaned") and not filename.endswith(".py"):
              file_path = os.path.join(UPLOAD_FOLDER, filename)
              try:
-                 load_and_clean_data(file_path, db_engine, table_mapping, transform_mapping)
+                 process_and_insert_data(Path(file_path))
              except Exception as e:
-                logging.error(f"Error loading and cleaning file: {file_path}: {e}")
+                print(f"Error processing file {filename}: {e}")
     else:
-        logging.error(f"Error: Directory not found: {UPLOAD_FOLDER}")
-    logging.info("Finished processing files.")
+        print(f"Error: Directory not found: {UPLOAD_FOLDER}")
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     main()

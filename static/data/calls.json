@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Nigel Jackson",
+        "profile_pic": "/static/images/profile1.jpg",
+        "time": "1 day"
+    },
+    {
+        "name": "Rachael Simmons",
+        "profile_pic": "/static/images/profile2.jpg",
+        "time": "1 day"
+    },
+    {
+        "name": "Bobbie Pell",
+        "profile_pic": "/static/images/profile3.jpg",
+        "time": "3 days"
+    },
+    {
+        "name": "Russell Bromley",
+        "profile_pic": "/static/images/profile4.jpg",
+        "time": "3 days"
+    }
+]

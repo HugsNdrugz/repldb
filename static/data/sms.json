@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Nigel Jackson",
+        "profile_pic": "/static/images/profile1.jpg",
+        "last_message": "Hey, you there?",
+        "messages": [
+            {
+                "sender": "Nigel Jackson",
+                "content": "Hey, you there?"
+            },
+            {
+                "sender": "You",
+                "content": "What's up"
+            }
+        ]
+    },
+    {
+        "name": "Rachael Simmons",
+        "profile_pic": "/static/images/profile2.jpg",
+        "last_message": "Sent you a text",
+        "messages": [
+            {
+                "sender": "Rachael Simmons",
+                "content": "Sent you a text"
+            },
+            {
+                "sender": "You",
+                "content": "Ok!"
+            }
+        ]
+    },
+    {
+        "name": "Bobbie Pell",
+        "profile_pic": "/static/images/profile3.jpg",
+        "last_message": "Where are you?",
+        "messages": [
+            {
+                "sender": "Bobbie Pell",
+                "content": "Where are you?"
+            },
+            {
+                "sender": "You",
+                "content": "I'm at home"
+            }
+        ]
+    },
+    {
+        "name": "Russell Bromley",
+        "profile_pic": "/static/images/profile4.jpg",
+        "last_message": "Got any plans",
+        "messages": [
+            {
+                "sender": "Russell Bromley",
+                "content": "Got any plans"
+            },
+            {
+                "sender": "You",
+                "content": "Not really"
+            }
+        ]
+    }
+]

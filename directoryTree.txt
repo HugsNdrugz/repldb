@@ -1,0 +1,54 @@
+.
+├── __pycache__
+│   ├── data_loader.cpython-311.pyc
+│   ├── database_utils.cpython-311.pyc
+│   └── transforms.cpython-311.pyc
+├── app.py
+├── create_db.py
+├── data_loader.py
+├── data_processor.py
+├── database_utils.py
+├── directoryTree.txt
+├── main.py
+├── my_database.db
+├── processing_script.py
+├── samples
+│   ├── calls.xlsx
+│   ├── chatMessages.xlsx
+│   ├── contacts.xlsx
+│   ├── installedApps.xlsx
+│   ├── keylogs.xlsx
+│   └── sms.xlsx
+├── schema.sql
+├── schema.txt
+├── static
+│   ├── css
+│   │   └── style.css
+│   ├── data
+│   │   ├── calls.json
+│   │   ├── chats.json
+│   │   ├── contacts.json
+│   │   ├── installed_apps.json
+│   │   ├── keylogs.json
+│   │   └── sms.json
+│   ├── images
+│   │   ├── logo.png
+│   │   └── logo.svg
+│   ├── js
+│   │   ├── app.js
+│   │   └── feather.min.js
+│   └── uploads
+│       ├── Tracking Smartphone - Free Remote Monitoring Tool For Android (2).xlsx
+│       ├── Tracking Smartphone - Free Remote Monitoring Tool For Android (3).xlsx
+│       ├── Tracking Smartphone - Free Remote Monitoring Tool For Android (4).xlsx
+│       ├── Tracking Smartphone - Free Remote Monitoring Tool For Android (5).xlsx
+│       ├── calls.xlsx
+│       ├── chat.xlsx
+│       ├── chatMessages.xlsx
+│       └── sms.xlsx
+├── templates
+│   └── base.html
+├── transforms.py
+└── uploads
+
+11 directories, 41 files

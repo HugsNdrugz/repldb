@@ -1,0 +1,58 @@
+[
+    {
+        "name": "Nigel Jackson",
+        "profile_pic": "/static/images/profile1.jpg",
+        "last_message": "I'm heading that way bro s...",
+        "messages": [
+            {
+                "sender": "Nigel Jackson",
+                "content": "Hey, I am on my way"
+            },
+            {
+                "sender": "You",
+                "content": "Sounds good!"
+            }
+        ]
+    },
+    {
+        "name": "Rachael Simmons",
+        "profile_pic": "/static/images/profile2.jpg",
+        "last_message": "You sent a video.",
+        "messages": [
+            {
+                "sender": "Rachael Simmons",
+                "content": "Hey, checkout this video"
+            },
+            {
+                "sender": "You",
+                "content": "Cool!"
+            }
+        ]
+    },
+    {
+        "name": "Bobbie Pell",
+        "profile_pic": "/static/images/profile3.jpg",
+        "last_message": "You: bobby you working?",
+        "messages": [
+            {
+                "sender": "You",
+                "content": "bobby you working?"
+            },
+            {
+                "sender": "Bobbie Pell",
+                "content": "Yes i am :("
+            }
+        ]
+    },
+    {
+        "name": "Russell Bromley",
+        "profile_pic": "/static/images/profile4.jpg",
+        "last_message": "You: Happy birthday",
+        "messages": [
+            {
+                "sender": "You",
+                "content": "Happy birthday"
+            }
+        ]
+    }
+]

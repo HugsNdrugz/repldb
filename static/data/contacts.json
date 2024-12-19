@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Nigel Jackson",
+        "profile_pic": "/static/images/profile1.jpg",
+        "phone_number": "123-456-7890"
+    },
+    {
+        "name": "Rachael Simmons",
+        "profile_pic": "/static/images/profile2.jpg",
+        "phone_number": "098-765-4321"
+    },
+    {
+        "name": "Bobbie Pell",
+        "profile_pic": "/static/images/profile3.jpg",
+        "phone_number": "111-222-3333"
+    },
+    {
+        "name": "Russell Bromley",
+        "profile_pic": "/static/images/profile4.jpg",
+        "phone_number": "444-555-6666"
+    }
+]
